@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-image: url('img/file-20220126-17.jpg'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+        button#addButton {
+    padding: 8px 16px;
+    border: none;
+    background-color: #490b95; 
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    }
+
+    button#addButton:hover {
+    background-color: #3c1865; 
+    }
+
+    input#cityInput {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    }
+
+    input#cityInput:focus {
+    border-color: #007bff; 
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .city-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 30px;
+    }
+    input {
+      width: 80%;
+      padding: 5px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Weather Dashboard</h1>
+
+  <div>
+    <input type="text" id="cityInput" placeholder="Enter city name">
+    <button id="addButton">Add</button>
+  </div>
+  
+  <div id="weather-container"></div>
+
+  <script>
+      // Get references to HTML elements.
+  const weatherContainer = document.getElementById('weather-container');
+  const cityInput = document.getElementById('cityInput');
+  const addButton = document.getElementById('addButton');
+
+  // Initialize an empty array to store weather data for cities.
+  let cities = [];
+
+  // Function to fetch weather data for a given city.
+  function fetchWeatherData(cityName) {
+    const apiKey = '2ef60acb6686d297de04eab176e0a43a';
+    const url = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${apiKey}`;
+
+    // Make an HTTP GET request using the fetch API and parse the response as JSON.
+    return fetch(url)
+      .then(response => response.json())
+      .catch(error => {
+        console.error('Error fetching weather data:', error);
+      });
+  }
+
+  // Add a click event listener to the "Add" button.
+  addButton.addEventListener('click', () => {
+    const cityName = cityInput.value;
+    if (cityName.trim() !== '') {
+      fetchWeatherData(cityName)
+        .then(data => {
+          if (data) {
+            // Push the retrieved weather data for the city into the cities array.
+            cities.push(data);
+            // Render the updated weather data on the webpage.
+            renderWeatherData();
+            // Clear the input field.
+            cityInput.value = '';
+          }
+        });
+    }
+  });
+
+  // Function to render weather data for all cities.
+  function renderWeatherData() {
+    // Clear the existing content of the weather container.
+    weatherContainer.innerHTML = '';
+
+    // Loop through the cities array and create a card for each city's weather data.
+    cities.forEach(city => {
+      const cityCard = document.createElement('div');
+      cityCard.classList.add('city-card');
+      cityCard.innerHTML = `
+        <h2>${city.name}</h2>
+        <p>Temperature: ${city.main.temp}°C</p>
+        <p>Weather: ${city.weather[0].main}</p>
+        <p>Description: ${city.weather[0].description}</p>
+      `;
+      // Append the city card to the weather container.
+      weatherContainer.appendChild(cityCard);
+    });
+  }
+
+  </script>
+</body>
+</html>
