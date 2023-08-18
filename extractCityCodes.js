@@ -33,7 +33,7 @@ const cityIds = [1248991,1850147,2644210,2988507,2147714,4930956,1796236,3143244
 //declaring the API ekey
 const apiKey = '2ef60acb6686d297de04eab176e0a43a';
 
-// Cache duration in seconds (5 minutes)
+// Cache duration in seconds (5 minutes).
 const cacheDuration = 300; 
 
 
