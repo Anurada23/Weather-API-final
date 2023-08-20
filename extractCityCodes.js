@@ -38,10 +38,10 @@ const cacheDuration = 300;
 
 
 // Import the NodeCache module for caching data in memory.
-const NodeCache = require('node-cache');
+ NodeCache = require('node-cache');
 
 // Assuming 'axios' is required for making HTTP requests.
- const axios = require('axios');
+ axios = require('axios');
 
 // Create a new instance of NodeCache.
 const cache = new NodeCache();
