@@ -41,7 +41,7 @@ const cacheDuration = 300;
 const NodeCache = require('node-cache');
 
 // Assuming 'axios' is required for making HTTP requests.
-const axios = require('axios');
+ const axios = require('axios');
 
 // Create a new instance of NodeCache.
 const cache = new NodeCache();
