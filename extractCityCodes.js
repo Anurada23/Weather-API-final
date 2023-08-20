@@ -1,5 +1,7 @@
 //Reading the cities from cities file
 const fs = require('fs');
+const axios = require('axios');                               //new
+const NodeCache = require('node-cache');                        // new
 
 fs.readFile('cities.json', 'utf8', (err, data) => {
   if (err) {
@@ -25,8 +27,6 @@ fs.readFile('cities.json', 'utf8', (err, data) => {
 
 
 
-const axios = require('axios');
-const NodeCache = require('node-cache');
 // identifying the city codes in cities file
 const cityIds = [1248991,1850147,2644210,2988507,2147714,4930956,1796236,3143244]; 
 
@@ -37,11 +37,6 @@ const apiKey = '2ef60acb6686d297de04eab176e0a43a';
 const cacheDuration = 300; 
 
 
-// Import the NodeCache module for caching data in memory.
- NodeCache = require('node-cache');
-
-// Assuming 'axios' is required for making HTTP requests.
- axios = require('axios');
 
 // Create a new instance of NodeCache.
 const cache = new NodeCache();
