@@ -9,23 +9,8 @@ const cache = new NodeCache();
 
 app.use(cors());
 
-  // Read city IDs data from cityIds.json               
-  // let cityIdsArray = [];
-  // fs.readFile('cities.json', 'utf8', (err, data) => {
-  //   if (err) {
-  //     console.error('Error reading city IDs JSON file:', err);
-  //     return;
-  //   }
-
-  //   try {
-  //     cityIdsArray = JSON.parse(data);
-  //     console.log('City IDs:', cityIdsArray);
-  //   } catch (parseError) {
-  //     console.error('Error parsing city IDs JSON:', parseError);
-  //   }
-  // });
-
-  let cityIdsArray = [];
+  // Read city IDs data from cities.json               
+ let cityIdsArray = [];
   fs.readFile('cities.json', 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading city IDs JSON file:', err);
