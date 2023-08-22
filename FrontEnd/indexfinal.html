@@ -145,7 +145,7 @@
 
     // Function to fetch weather data for a given city from your backend API.
     function fetchWeatherDataFromAPI(cityName) {
-      const apiUrl = `http://localhost:3000/api/weather?city=${cityName}`;
+      const apiUrl = `http://localhost:3001/api/weather?city=${cityName}`;
 
       // Make an HTTP GET request using the fetch API and parse the response as JSON.
       return fetch(apiUrl)
