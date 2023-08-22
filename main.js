@@ -46,73 +46,46 @@ function fetchWeatherData(cityIds) {
     });
 }
 
+
+
 // Define the cache duration in seconds (5 minutes).
 const cacheDuration = 300;
 
-// Define an API endpoint to fetch weather data
-// app.get('/api/weather', (req, res) => {
-//   //const cityIds = cityDataArray.map((city) => city.CityCode);
-//   //const city = req.query.city;
-//   let cityIds = [];
-//   console.log(req.query.city);
-//   for (let index = 0; index < cityDataArray.length; index++) {
-//     const city = cityDataArray[index];
-//     if (city.CityName===req.query.city){
-//         cityIds.push(city.CityCode);
-//     }
-//   }
-//   console.log(cityIds);
 
-//   getWeatherDataFromCacheOrAPI(cityIds)
-//     .then((weatherData) => {
-//       res.json(weatherData);
-//     })
-//     .catch((error) => {
-//       console.error('Error:', error);
-//       res.status(500).json({ error: 'Failed to fetch weather data' });
-//     });
-// });
-// Define an API endpoint to fetch weather data
-app.get('/api/weather', (req, res) => {
-    const cityName = req.query.city;
+// Define an API endpoint to fetch weather data for all the given cities
+  app.get('/api/weather/multiple', (req, res) => {
+    const cityIds = [1248991, 1850147, 2644210, 2988507, 2147714, 4930956, 1796236, 3143244];
     
-    // Find the city code for the provided city name
-    const city = cityDataArray.find(city => city.CityName === cityName);
+    getWeatherDataFromCacheOrAPI(cityIds)
+        .then((weatherData) => {
+            res.json(weatherData);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'Failed to fetch weather data' });
+        });
+});
+
+
+
+
+//Define a function to get weather data either from the cache or the API.
+  function getWeatherDataFromCacheOrAPI(cityIds) {
+      const cacheKey = 'weatherData';
+      const cachedData = cache.get(cacheKey);
     
-    if (!city) {
-      return res.status(404).json({ error: 'City not found' });
+      if (cachedData) {
+        console.log('Using cached weather data.');
+        return Promise.resolve(cachedData);
+      } else {
+        console.log('Fetching weather data from API.');
+        return fetchWeatherData(cityIds).then((data) => {
+          cache.set(cacheKey, data, cacheDuration);
+          return data;
+        });
+      }
     }
   
-    const cityIds = [city.CityCode];
-  
-    getWeatherDataFromCacheOrAPI(cityIds)
-      .then((weatherData) => {
-        res.json(weatherData);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Failed to fetch weather data' });
-      });
-  });
-
-
-// Define a function to get weather data either from the cache or the API.
-function getWeatherDataFromCacheOrAPI(cityIds) {
-  const cacheKey = 'weatherData';
-  const cachedData = cache.get(cacheKey);
-
-  if (cachedData) {
-    console.log('Using cached weather data.');
-    return Promise.resolve(cachedData);
-  } else {
-    console.log('Fetching weather data from API.');
-    return fetchWeatherData(cityIds).then((data) => {
-      cache.set(cacheKey, data, cacheDuration);
-      return data;
-    });
-  }
-}
-
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
