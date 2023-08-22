@@ -74,10 +74,12 @@ const cacheDuration = 300;
     
       if (cachedData) {
         console.log('Using cached weather data.');
+        console.log('Using cached weather data:', JSON.stringify(cachedData, null, 2)); // Log the cached data
         return Promise.resolve(cachedData);
       } else {
         console.log('Fetching weather data from API.');
         return fetchWeatherData(cityIds).then((data) => {
+          console.log('Data received from API:', JSON.stringify(data, null, 2)); // Log the received data
           cache.set(cacheKey, data, cacheDuration);
           return data;
         });
