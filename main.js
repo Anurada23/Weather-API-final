@@ -50,18 +50,51 @@ function fetchWeatherData(cityIds) {
 const cacheDuration = 300;
 
 // Define an API endpoint to fetch weather data
-app.get('/api/weather', (req, res) => {
-  const cityIds = cityDataArray.map((city) => city.CityCode);
+// app.get('/api/weather', (req, res) => {
+//   //const cityIds = cityDataArray.map((city) => city.CityCode);
+//   //const city = req.query.city;
+//   let cityIds = [];
+//   console.log(req.query.city);
+//   for (let index = 0; index < cityDataArray.length; index++) {
+//     const city = cityDataArray[index];
+//     if (city.CityName===req.query.city){
+//         cityIds.push(city.CityCode);
+//     }
+//   }
+//   console.log(cityIds);
 
-  getWeatherDataFromCacheOrAPI(cityIds)
-    .then((weatherData) => {
-      res.json(weatherData);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Failed to fetch weather data' });
-    });
-});
+//   getWeatherDataFromCacheOrAPI(cityIds)
+//     .then((weatherData) => {
+//       res.json(weatherData);
+//     })
+//     .catch((error) => {
+//       console.error('Error:', error);
+//       res.status(500).json({ error: 'Failed to fetch weather data' });
+//     });
+// });
+// Define an API endpoint to fetch weather data
+app.get('/api/weather', (req, res) => {
+    const cityName = req.query.city;
+    
+    // Find the city code for the provided city name
+    const city = cityDataArray.find(city => city.CityName === cityName);
+    
+    if (!city) {
+      return res.status(404).json({ error: 'City not found' });
+    }
+  
+    const cityIds = [city.CityCode];
+  
+    getWeatherDataFromCacheOrAPI(cityIds)
+      .then((weatherData) => {
+        res.json(weatherData);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Failed to fetch weather data' });
+      });
+  });
+
 
 // Define a function to get weather data either from the cache or the API.
 function getWeatherDataFromCacheOrAPI(cityIds) {

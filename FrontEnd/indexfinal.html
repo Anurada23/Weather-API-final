@@ -88,7 +88,7 @@
 
     // Function to fetch weather data for a given city from your backend API.
     function fetchWeatherDataFromAPI(cityName) {
-      const apiUrl = `http://localhost:5500/api/weather?city=${cityName}`;
+      const apiUrl = `http://localhost:3001/api/weather?city=${cityName}`;
 
       // Make an HTTP GET request using the fetch API and parse the response as JSON.
       return fetch(apiUrl)
@@ -117,24 +117,46 @@
     });
 
     // Function to render weather data for all cities.
-    function renderWeatherData() {
-      // Clear the existing content of the weather container.
-      weatherContainer.innerHTML = '';
+    // function renderWeatherData() {
+    //   // Clear the existing content of the weather container.
+    //   weatherContainer.innerHTML = '';
 
-      // Loop through the cities array and create a card for each city's weather data.
-      cities.forEach(city => {
-        const cityCard = document.createElement('div');
-        cityCard.classList.add('city-card');
-        cityCard.innerHTML = `
-          <h2>${city.name}</h2>
-          <p>Temperature: ${city.main.temp}°C</p>
-          <p>Weather: ${city.weather[0].main}</p>
-          <p>Description: ${city.weather[0].description}</p>
-        `;
-        // Append the city card to the weather container.
-        weatherContainer.appendChild(cityCard);
-      });
-    }
+    //   // Loop through the cities array and create a card for each city's weather data.
+    //   cities.forEach(city => {
+    //     const cityCard = document.createElement('div');
+    //     cityCard.classList.add('city-card');
+    //     cityCard.innerHTML = `
+    //       <h2>${city.name}</h2>
+    //       <p>Temperature: ${city.main.temp}°C</p>
+    //       <p>Weather: ${city.weather[0].main}</p>
+    //       <p>Description: ${city.weather[0].description}</p>
+    //     `;
+    //     // Append the city card to the weather container.
+    //     weatherContainer.appendChild(cityCard);
+    //   });
+    // }
+    function renderWeatherData() {
+    // Clear the existing content of the weather container.
+    weatherContainer.innerHTML = '';
+
+    // Loop through the cities array and create a card for each city's weather data.
+    cities.forEach(city => {
+      const cityCard = document.createElement('div');
+      cityCard.classList.add('city-card');
+      cityCard.innerHTML = `
+        <h2>${city.name}</h2>
+        <p>Temperature: ${city.main.temp}°C</p>
+        <p>Weather: ${city.weather[0].main}</p>
+        <p>Description: ${city.weather[0].description}</p>
+        <p>Humidity: ${city.main.humidity}%</p>
+        <!-- Add more lines here to display other weather information -->
+      `;
+      // Append the city card to the weather container.
+      weatherContainer.appendChild(cityCard);
+    });
+  }
+
+
 
   </script>
 </body>
