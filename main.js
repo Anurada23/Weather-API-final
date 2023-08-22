@@ -9,28 +9,39 @@ const cache = new NodeCache();
 
 app.use(cors());
 
-// Read cities data from cities.json
-let cityDataArray = [];
-fs.readFile('cities.json', 'utf8', (err, data) => {
-  if (err) {
-    console.error('Error reading JSON file:', err);
-    return;
-  }
+  // Read city IDs data from cityIds.json               
+  // let cityIdsArray = [];
+  // fs.readFile('cities.json', 'utf8', (err, data) => {
+  //   if (err) {
+  //     console.error('Error reading city IDs JSON file:', err);
+  //     return;
+  //   }
 
-  try {
-    const weatherData = JSON.parse(data);
-    cityDataArray = weatherData.List.map(city => ({
-      CityCode: city.CityCode,
-      CityName: city.CityName,
-      Temperature: city.Temp,
-      Status: city.Status,
-    }));
+  //   try {
+  //     cityIdsArray = JSON.parse(data);
+  //     console.log('City IDs:', cityIdsArray);
+  //   } catch (parseError) {
+  //     console.error('Error parsing city IDs JSON:', parseError);
+  //   }
+  // });
 
-    console.log(cityDataArray);
-  } catch (parseError) {
-    console.error('Error parsing JSON:', parseError);
-  }
-});
+  let cityIdsArray = [];
+  fs.readFile('cities.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading city IDs JSON file:', err);
+      return;
+    }
+
+    try {
+      const parsedData = JSON.parse(data);
+      cityIdsArray = parsedData.List.map(city => city.CityCode);
+      console.log('City IDs:', cityIdsArray);
+    } catch (parseError) {
+      console.error('Error parsing city IDs JSON:', parseError);
+    }
+  });
+
+  
 
 // Fetch weather data from OpenWeatherMap API
 function fetchWeatherData(cityIds) {
@@ -52,10 +63,13 @@ function fetchWeatherData(cityIds) {
 const cacheDuration = 300;
 
 
-// Define an API endpoint to fetch weather data for all the given cities
+
+//Define an API endpoint to fetch weather data for all the given cities                           
   app.get('/api/weather/multiple', (req, res) => {
-    const cityIds = [1248991, 1850147, 2644210, 2988507, 2147714, 4930956, 1796236, 3143244];
-    
+     //hardcode ids that was used for testing
+    //const cityIds = [1248991, 1850147, 2644210, 2988507, 2147714, 4930956, 1796236, 3143244];       
+   
+    const cityIds= cityIdsArray;
     getWeatherDataFromCacheOrAPI(cityIds)
         .then((weatherData) => {
             res.json(weatherData);
@@ -68,8 +82,7 @@ const cacheDuration = 300;
 
 
 
-
-//Define a function to get weather data either from the cache or the API.
+//Define a function to get weather data either from the cache or the API.              
   function getWeatherDataFromCacheOrAPI(cityIds) {
       const cacheKey = 'weatherData';
       const cachedData = cache.get(cacheKey);
@@ -85,6 +98,8 @@ const cacheDuration = 300;
         });
       }
     }
+
+
   
 const PORT = 3001;
 app.listen(PORT, () => {
