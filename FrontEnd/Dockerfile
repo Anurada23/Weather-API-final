@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install project dependencies
 RUN npm install
 
+# Install http-server globally
+RUN npm install -g http-server
+
 # Copy the rest of the application code to the container
 COPY . .
 
@@ -17,4 +20,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run the app when the container starts
-CMD [ "npm", "start" ]
+CMD [ "http-server", "-p", "3000" ]
